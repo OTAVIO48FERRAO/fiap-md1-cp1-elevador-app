@@ -38,7 +38,7 @@ Instalação e Execução
 Clone o repositório:
 
 Bash
-git clone https://github.com/seu-OTAVIO48FERRAO/elevator-control.git
+git clone [https://github.com/seu-OTAVIO48FERRAO/elevator-control.git](https://github.com/OTAVIO48FERRAO/fiap-md1-cp1-elevador-app)
 cd elevator-control
 Instale as dependências:
 
