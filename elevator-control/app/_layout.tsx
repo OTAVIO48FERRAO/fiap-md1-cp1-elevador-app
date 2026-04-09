@@ -1,24 +1,25 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Tabs } from 'expo-router';
+import { ElevatorProvider } from '../context/ElevatorContext';
+import { Ionicons } from '@expo/vector-icons';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+export default function Layout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <ElevatorProvider>
+      <Tabs screenOptions={{
+        headerTitle: "FIAP ", 
+        headerTitleAlign: 'center',       // Centraliza o título
+        headerStyle: { backgroundColor: '#121212' },
+        headerTintColor: '#ff007f',       // Título na cor de destaque
+        tabBarStyle: { backgroundColor: '#121212' },
+        tabBarActiveTintColor: '#ff007f',
+
+}}>
+        <Tabs.Screen name="index" options={{ title: 'Dashboard', tabBarIcon: ({color}) => <Ionicons name="apps" size={24} color={color}/> }} />
+        <Tabs.Screen name="details" options={{ title: 'Detalhes', tabBarIcon: ({color}) => <Ionicons name="stats-chart" size={24} color={color}/> }} />
+        <Tabs.Screen name="simulation" options={{ title: 'Simulação', tabBarIcon: ({color}) => <Ionicons name="git-network" size={24} color={color}/> }} />
+      </Tabs>
+    </ElevatorProvider>
   );
 }
+
