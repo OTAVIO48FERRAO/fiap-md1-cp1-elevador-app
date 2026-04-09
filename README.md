@@ -38,7 +38,7 @@ Instalação e Execução
 Clone o repositório:
 
 Bash
-git clone https://github.com/seu-usuario/elevator-control.git
+git clone https://github.com/seu-OTAVIO48FERRAO/elevator-control.git
 cd elevator-control
 Instale as dependências:
 
