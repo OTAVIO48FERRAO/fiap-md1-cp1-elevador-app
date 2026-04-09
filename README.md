@@ -1,4 +1,6 @@
 Elevator-Control
+Otávio Ferrão RM556452
+
 O Elevator-Control é um aplicativo móvel desenvolvido em React Native focado no monitoramento e análise do fluxo de passageiros em edifícios. O objetivo principal é fornecer dados de demanda em tempo real, permitindo que os usuários avaliem a ocupação dos elevadores e decidam de forma mais eficiente entre aguardar o transporte ou utilizar as escadas.
 
 Visão Geral
