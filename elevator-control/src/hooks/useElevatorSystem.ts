@@ -10,9 +10,11 @@ export const useElevatorSystem = () => {
   }, [floorCalls]);
 
   const addCall = (floorIndex: number) => {
-    const newCalls = [...floorCalls];
-    newCalls[floorIndex] += 1;
-    setFloorCalls(newCalls);
+    setFloorCalls(prev => {
+      const newCalls = [...prev];
+      newCalls[floorIndex] += 1;
+      return newCalls;
+    });
   };
 
   const resetCalls = () => setFloorCalls(Array(7).fill(0));

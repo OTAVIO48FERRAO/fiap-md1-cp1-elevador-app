@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useElevator } from '../context/ElevatorContext';
+import { useElevator } from '../src/context/ElevatorContext';
 import { calculateDistribution, ELEVATOR_CONFIG } from '../src/utils/calculations';
 import { useEffect, useState } from 'react';
 import InfoCard from '../src/components/InfoCard'; // Importando o componente

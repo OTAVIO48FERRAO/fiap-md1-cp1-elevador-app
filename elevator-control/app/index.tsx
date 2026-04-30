@@ -1,56 +1,101 @@
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useElevator } from '../context/ElevatorContext';
+import { useElevator } from '../src/context/ElevatorContext';
+import { useAuth } from '../src/context/AuthContext';
+import { useTheme } from '../src/context/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Dashboard() {
-  const { floors, incrementCall, runAutoSimulation, resetData } = useElevator();
+  const { floors, incrementCall } = useElevator(); 
+  const { signOut, user } = useAuth();
+  const { theme, toggleTheme, colors } = useTheme();
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Registro de Chamadas</Text>
-      
-      {floors.map((calls, index) => (
-        <TouchableOpacity 
-          key={index} 
-          style={styles.floorCard} 
-          onPress={() => incrementCall(index)}
-        >
-          <Text style={styles.floorText}>{index === 0 ? 'Térreo' : `${index}º Andar`}</Text>
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{calls}</Text>
-          </View>
+    <ScrollView style={{ backgroundColor: colors.background }}>
+      <View style={[styles.headerActions, { borderBottomColor: colors.card }]}>
+        <TouchableOpacity onPress={toggleTheme} style={styles.iconButton}>
+          <Ionicons 
+            name={(theme === 'dark' ? 'sunny' : 'moon') as any} 
+            size={24} 
+            color={colors.primary} 
+          />
+          <Text style={{ color: colors.text, fontSize: 10 }}>Tema</Text>
         </TouchableOpacity>
-      ))}
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.btnSimular} onPress={runAutoSimulation}>
-          <Text style={styles.btnText}>Simulação Automática</Text>
+        <TouchableOpacity onPress={signOut} style={styles.iconButton}>
+          <Ionicons name="exit-outline" size={24} color="#ff4444" />
+          <Text style={{ color: colors.text, fontSize: 10 }}>Sair</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.container}>
+        <Text style={[styles.welcome, { color: colors.text }]}>
+          Olá, <Text style={{ color: colors.primary, fontWeight: 'bold' }}>{user?.name || 'Usuário'}</Text>
+        </Text>
         
-        <TouchableOpacity style={[styles.btnSimular, {backgroundColor: '#444'}]} onPress={resetData}>
-          <Text style={styles.btnText}>Zerar Dados</Text>
-        </TouchableOpacity>
+        <View style={[styles.card, { backgroundColor: colors.card }]}>
+          <Text style={[styles.cardTitle, { color: colors.text }]}>Status dos Andares</Text>
+          
+          {floors.map((calls, index) => (
+            <View key={index} style={[styles.floorRow, { borderBottomColor: theme === 'dark' ? '#333' : '#eee' }]}>
+              <View>
+                <Text style={[styles.floorText, { color: colors.text }]}>Andar {index}</Text>
+                <Text style={{ color: colors.primary, fontSize: 13, fontWeight: '600' }}>
+                  {calls} {calls === 1 ? 'chamada' : 'chamadas'}
+                </Text>
+              </View>
+              
+              <TouchableOpacity 
+                style={[styles.callButton, { backgroundColor: colors.primary }]}
+                onPress={() => incrementCall(index)} 
+              >
+                <Ionicons name="arrow-up" size={18} color="#fff" />
+                <Text style={styles.callButtonText}>CHAMAR</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212', padding: 20 },
-  title: { color: '#f5f5f5', fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  floorCard: { 
-    backgroundColor: '#1e1e1e', 
+  container: { padding: 20 },
+  headerActions: { 
+    flexDirection: 'row', 
+    justifyContent: 'flex-end', 
+    padding: 15, 
+    borderBottomWidth: 1,
+    gap: 20
+  },
+  iconButton: { alignItems: 'center' },
+  welcome: { fontSize: 20, marginBottom: 25 },
+  card: { 
     padding: 20, 
-    borderRadius: 10, 
+    borderRadius: 20, 
+    elevation: 8, 
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4.65 
+  },
+  cardTitle: { fontSize: 22, fontWeight: 'bold', marginBottom: 20 },
+  floorRow: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    marginBottom: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#ff007f'
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1
   },
-  floorText: { color: '#f5f5f5', fontSize: 18 },
-  badge: { backgroundColor: '#ff007f', borderRadius: 15, paddingHorizontal: 12, justifyContent: 'center' },
-  badgeText: { color: '#fff', fontWeight: 'bold' },
-  buttonContainer: { marginTop: 20, gap: 10, marginBottom: 40 },
-  btnSimular: { backgroundColor: '#ff007f', padding: 15, borderRadius: 8, alignItems: 'center' },
-  btnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
+  floorText: { fontSize: 18, fontWeight: 'bold' },
+  callButton: { 
+    flexDirection: 'row',
+    paddingHorizontal: 12, 
+    paddingVertical: 8, 
+    borderRadius: 8, 
+    alignItems: 'center',
+    gap: 5
+  },
+  callButtonText: { color: '#fff', fontSize: 12, fontWeight: 'bold' }
 });
